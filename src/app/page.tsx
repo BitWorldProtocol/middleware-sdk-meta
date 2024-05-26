@@ -1,8 +1,12 @@
 import { Button } from "@/components/Button";
 import { Input } from "@/components/Input";
 import { Textarea } from "@/components/Textarea";
+import { getServerSession } from "@/server/auth";
 
 export default async function Home() {
+
+  const session = await getServerSession()
+  console.log(session, "-------> only server on see")
   
   return (
     <div className="h-screen flex justify-center items-center">
