@@ -5,6 +5,9 @@ settings:
   excludeLinksFromLockfile: false
 
 dependencies:
+  '@auth/drizzle-adapter':
+    specifier: ^1.1.0
+    version: registry.npmmirror.com/@auth/drizzle-adapter@1.1.0
   '@radix-ui/react-slot':
     specifier: ^1.0.2
     version: registry.npmmirror.com/@radix-ui/react-slot@1.0.2(@types/react@18.3.3)(react@18.3.1)
@@ -81,6 +84,43 @@ packages:
     name: '@alloc/quick-lru'
     version: 5.2.0
     engines: {node: '>=10'}
+
+  registry.npmmirror.com/@auth/core@0.31.0:
+    resolution: {integrity: sha512-UKk3psvA1cRbk4/c9CkpWB8mdWrkKvzw0DmEYRsWolUQytQ2cRqx+hYuV6ZCsngw/xbj9hpmkZmAZEyq2g4fMg==, registry: http://registry.npm.taobao.org/, tarball: https://registry.npmmirror.com/@auth/core/-/core-0.31.0.tgz}
+    name: '@auth/core'
+    version: 0.31.0
+    peerDependencies:
+      '@simplewebauthn/browser': ^9.0.1
+      '@simplewebauthn/server': ^9.0.2
+      nodemailer: ^6.8.0
+    peerDependenciesMeta:
+      '@simplewebauthn/browser':
+        optional: true
+      '@simplewebauthn/server':
+        optional: true
+      nodemailer:
+        optional: true
+    dependencies:
+      '@panva/hkdf': registry.npmmirror.com/@panva/hkdf@1.1.1
+      '@types/cookie': registry.npmmirror.com/@types/cookie@0.6.0
+      cookie: registry.npmmirror.com/cookie@0.6.0
+      jose: registry.npmmirror.com/jose@5.3.0
+      oauth4webapi: registry.npmmirror.com/oauth4webapi@2.10.4
+      preact: registry.npmmirror.com/preact@10.11.3
+      preact-render-to-string: registry.npmmirror.com/preact-render-to-string@5.2.3(preact@10.11.3)
+    dev: false
+
+  registry.npmmirror.com/@auth/drizzle-adapter@1.1.0:
+    resolution: {integrity: sha512-ZC83ne3Ulkxh2II2T5qazgrqc1AmWbbPzs3oR+C93DMlIV8DPIgEaw4cmbV/kesO9xO+Gt7HpkctmOa2B26A1Q==, registry: http://registry.npm.taobao.org/, tarball: https://registry.npmmirror.com/@auth/drizzle-adapter/-/drizzle-adapter-1.1.0.tgz}
+    name: '@auth/drizzle-adapter'
+    version: 1.1.0
+    dependencies:
+      '@auth/core': registry.npmmirror.com/@auth/core@0.31.0
+    transitivePeerDependencies:
+      - '@simplewebauthn/browser'
+      - '@simplewebauthn/server'
+      - nodemailer
+    dev: false
 
   registry.npmmirror.com/@babel/runtime@7.24.5:
     resolution: {integrity: sha512-Nms86NXrsaeU9vbBJKni6gXiEXZ4CVpYVzEjDH9Sb8vmZ3UljyA1GSOJl/6LGPO8EHLuSF9H+IxNXHPX8QHJ4g==, registry: http://registry.npm.taobao.org/, tarball: https://registry.npmmirror.com/@babel/runtime/-/runtime-7.24.5.tgz}
@@ -934,6 +974,12 @@ packages:
       tslib: registry.npmmirror.com/tslib@2.6.2
     dev: false
 
+  registry.npmmirror.com/@types/cookie@0.6.0:
+    resolution: {integrity: sha512-4Kh9a6B2bQciAhf7FSuMRRkUWecJgJu9nPnx3yzpsfXX/c50REIqpHY4C82bXP90qrLtXtkDxTZosYO3UpOwlA==, registry: http://registry.npm.taobao.org/, tarball: https://registry.npmmirror.com/@types/cookie/-/cookie-0.6.0.tgz}
+    name: '@types/cookie'
+    version: 0.6.0
+    dev: false
+
   registry.npmmirror.com/@types/json5@0.0.29:
     resolution: {integrity: sha512-dRLjCWHYg4oaA77cxO64oO+7JwCwnIzkZPdrrC71jQmQtlhM556pwKo5bUzqvZndkVbeFLIIi+9TC40JNF5hNQ==, registry: http://registry.npm.taobao.org/, tarball: https://registry.npmmirror.com/@types/json5/-/json5-0.0.29.tgz}
     name: '@types/json5'
@@ -1477,6 +1523,13 @@ packages:
     resolution: {integrity: sha512-YZ3GUyn/o8gfKJlnlX7g7xq4gyO6OSuhGPKaaGssGB2qgDUS0gPgtTvoyZLTt9Ab6dC4hfc9dV5arkvc/OCmrw==, registry: http://registry.npm.taobao.org/, tarball: https://registry.npmmirror.com/cookie/-/cookie-0.5.0.tgz}
     name: cookie
     version: 0.5.0
+    engines: {node: '>= 0.6'}
+    dev: false
+
+  registry.npmmirror.com/cookie@0.6.0:
+    resolution: {integrity: sha512-U71cyTamuh1CRNCfpGY6to28lxvNwPG4Guz/EVjgf3Jmzv0vlDp1atT9eS5dDjMYHucpHbWns6Lwf3BKz6svdw==, registry: http://registry.npm.taobao.org/, tarball: https://registry.npmmirror.com/cookie/-/cookie-0.6.0.tgz}
+    name: cookie
+    version: 0.6.0
     engines: {node: '>= 0.6'}
     dev: false
 
@@ -3110,6 +3163,12 @@ packages:
     version: 4.15.5
     dev: false
 
+  registry.npmmirror.com/jose@5.3.0:
+    resolution: {integrity: sha512-IChe9AtAE79ru084ow8jzkN2lNrG3Ntfiv65Cvj9uOCE2m5LNsdHG+9EbxWxAoWRF9TgDOqLN5jm08++owDVRg==, registry: http://registry.npm.taobao.org/, tarball: https://registry.npmmirror.com/jose/-/jose-5.3.0.tgz}
+    name: jose
+    version: 5.3.0
+    dev: false
+
   registry.npmmirror.com/js-tokens@4.0.0:
     resolution: {integrity: sha512-RdJUflcE3cUzKiMqQgsCu06FPu9UdIJO0beYbPhHN4k6apgJtifcoCtT9bcxOpYBtpD2kCM6Sbzg4CausW/PKQ==, registry: http://registry.npm.taobao.org/, tarball: https://registry.npmmirror.com/js-tokens/-/js-tokens-4.0.0.tgz}
     name: js-tokens
@@ -3482,6 +3541,12 @@ packages:
     name: normalize-path
     version: 3.0.0
     engines: {node: '>=0.10.0'}
+
+  registry.npmmirror.com/oauth4webapi@2.10.4:
+    resolution: {integrity: sha512-DSoj8QoChzOCQlJkRmYxAJCIpnXFW32R0Uq7avyghIeB6iJq0XAblOD7pcq3mx4WEBDwMuKr0Y1qveCBleG2Xw==, registry: http://registry.npm.taobao.org/, tarball: https://registry.npmmirror.com/oauth4webapi/-/oauth4webapi-2.10.4.tgz}
+    name: oauth4webapi
+    version: 2.10.4
+    dev: false
 
   registry.npmmirror.com/oauth@0.9.15:
     resolution: {integrity: sha512-a5ERWK1kh38ExDEfoO6qUHJb32rd7aYmPHuyCu3Fta/cnICvYmgd2uhuKXvPD+PXB+gCEYYEaQdIRAjCOwAKNA==, registry: http://registry.npm.taobao.org/, tarball: https://registry.npmmirror.com/oauth/-/oauth-0.9.15.tgz}
@@ -3935,6 +4000,18 @@ packages:
     engines: {node: '>=12'}
     dev: false
 
+  registry.npmmirror.com/preact-render-to-string@5.2.3(preact@10.11.3):
+    resolution: {integrity: sha512-aPDxUn5o3GhWdtJtW0svRC2SS/l8D9MAgo2+AWml+BhDImb27ALf04Q2d+AHqUUOc6RdSXFIBVa2gxzgMKgtZA==, registry: http://registry.npm.taobao.org/, tarball: https://registry.npmmirror.com/preact-render-to-string/-/preact-render-to-string-5.2.3.tgz}
+    id: registry.npmmirror.com/preact-render-to-string/5.2.3
+    name: preact-render-to-string
+    version: 5.2.3
+    peerDependencies:
+      preact: '>=10'
+    dependencies:
+      preact: registry.npmmirror.com/preact@10.11.3
+      pretty-format: registry.npmmirror.com/pretty-format@3.8.0
+    dev: false
+
   registry.npmmirror.com/preact-render-to-string@5.2.6(preact@10.22.0):
     resolution: {integrity: sha512-JyhErpYOvBV1hEPwIxc/fHWXPfnEGdRKxc8gFdAZ7XV4tlzyzG847XAyEZqoDnynP88akM4eaHcSOzNcLWFguw==, registry: http://registry.npm.taobao.org/, tarball: https://registry.npmmirror.com/preact-render-to-string/-/preact-render-to-string-5.2.6.tgz}
     id: registry.npmmirror.com/preact-render-to-string/5.2.6
@@ -3945,6 +4022,12 @@ packages:
     dependencies:
       preact: registry.npmmirror.com/preact@10.22.0
       pretty-format: registry.npmmirror.com/pretty-format@3.8.0
+    dev: false
+
+  registry.npmmirror.com/preact@10.11.3:
+    resolution: {integrity: sha512-eY93IVpod/zG3uMF22Unl8h9KkrcKIRs2EGar8hwLZZDU1lkjph303V9HZBwufh2s736U6VXuhD109LYqPoffg==, registry: http://registry.npm.taobao.org/, tarball: https://registry.npmmirror.com/preact/-/preact-10.11.3.tgz}
+    name: preact
+    version: 10.11.3
     dev: false
 
   registry.npmmirror.com/preact@10.22.0:

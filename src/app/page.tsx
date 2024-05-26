@@ -1,11 +1,8 @@
 import { Button } from "@/components/Button";
 import { Input } from "@/components/Input";
 import { Textarea } from "@/components/Textarea";
-import { db } from "@/server/db/db";
 
 export default async function Home() {
-  
-  const users = await db.query.Users.findMany()
   
   return (
     <div className="h-screen flex justify-center items-center">
