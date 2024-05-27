@@ -2,11 +2,14 @@ import { Button } from "@/components/Button";
 import { Input } from "@/components/Input";
 import { Textarea } from "@/components/Textarea";
 import { getServerSession } from "@/server/auth";
+import { redirect } from "next/navigation";
 
 export default async function Home() {
 
   const session = await getServerSession()
-  console.log(session, "-------> only server on see")
+  if (!session?.user) {
+    redirect("/api/auth/signin")
+  }
   
   return (
     <div className="h-screen flex justify-center items-center">
