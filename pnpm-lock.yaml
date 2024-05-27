@@ -20,6 +20,9 @@ dependencies:
   drizzle-orm:
     specifier: ^0.30.10
     version: registry.npmmirror.com/drizzle-orm@0.30.10(@types/react@18.3.3)(pg@8.11.5)(postgres@3.4.4)(react@18.3.1)
+  drizzle-zod:
+    specifier: ^0.5.1
+    version: registry.npmmirror.com/drizzle-zod@0.5.1(drizzle-orm@0.30.10)(zod@3.23.8)
   lucide-react:
     specifier: ^0.379.0
     version: registry.npmmirror.com/lucide-react@0.379.0(react@18.3.1)
@@ -1829,6 +1832,19 @@ packages:
       pg: registry.npmmirror.com/pg@8.11.5
       postgres: registry.npmmirror.com/postgres@3.4.4
       react: registry.npmmirror.com/react@18.3.1
+    dev: false
+
+  registry.npmmirror.com/drizzle-zod@0.5.1(drizzle-orm@0.30.10)(zod@3.23.8):
+    resolution: {integrity: sha512-C/8bvzUH/zSnVfwdSibOgFjLhtDtbKYmkbPbUCq46QZyZCH6kODIMSOgZ8R7rVjoI+tCj3k06MRJMDqsIeoS4A==, registry: http://registry.npm.taobao.org/, tarball: https://registry.npmmirror.com/drizzle-zod/-/drizzle-zod-0.5.1.tgz}
+    id: registry.npmmirror.com/drizzle-zod/0.5.1
+    name: drizzle-zod
+    version: 0.5.1
+    peerDependencies:
+      drizzle-orm: '>=0.23.13'
+      zod: '*'
+    dependencies:
+      drizzle-orm: registry.npmmirror.com/drizzle-orm@0.30.10(@types/react@18.3.3)(pg@8.11.5)(postgres@3.4.4)(react@18.3.1)
+      zod: registry.npmmirror.com/zod@3.23.8
     dev: false
 
   registry.npmmirror.com/eastasianwidth@0.2.0:

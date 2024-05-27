@@ -16,8 +16,8 @@ export const db = drizzle(pool)
  
 export const users = pgTable("user", {
   id: text("id")
-    .primaryKey()
-    .$defaultFn(() => crypto.randomUUID()),
+    .notNull()
+    .primaryKey(),
   name: text("name"),
   email: text("email").notNull(),
   emailVerified: timestamp("emailVerified", { mode: "date" }),

@@ -1,10 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import z from "zod";
-
-const inputSchema = z.object({
-  name: z.string().min(3).max(10),
-  email: z.string().email()
-});
+import { updateUserSchema } from "@/server/db/validate-schema";
 
 /**
  * 处理GET请求，验证查询参数，并返回验证结果。
@@ -16,12 +11,14 @@ export function GET(request: NextRequest) {
     // 提取查询参数
     const query = request.nextUrl.searchParams
 
-    const name = query.get("name")
+    // const id = query.get("id")
+    // const name = query.get("name")
     const email = query.get("email")
 
     // 使用输入模式解析查询参数
-    const result = inputSchema.safeParse({
-        name,
+    const result = updateUserSchema.safeParse({
+        // id,
+        // name,
         email
     })
 
@@ -29,6 +26,7 @@ export function GET(request: NextRequest) {
     if(result.success) {
         return NextResponse.json(result.data)
     } else {
+        console.error(result.error)
         return NextResponse.json({
             error: result.error.message
         })
