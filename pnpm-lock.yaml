@@ -11,9 +11,18 @@ dependencies:
   '@radix-ui/react-slot':
     specifier: ^1.0.2
     version: registry.npmmirror.com/@radix-ui/react-slot@1.0.2(@types/react@18.3.3)(react@18.3.1)
+  '@tanstack/react-query':
+    specifier: ^5.39.0
+    version: registry.npmmirror.com/@tanstack/react-query@5.39.0(react@18.3.1)
   '@trpc/client':
     specifier: 11.0.0-rc.377
     version: registry.npmmirror.com/@trpc/client@11.0.0-rc.377(@trpc/server@11.0.0-rc.377)
+  '@trpc/next':
+    specifier: 11.0.0-rc.377
+    version: registry.npmmirror.com/@trpc/next@11.0.0-rc.377(@tanstack/react-query@5.39.0)(@trpc/client@11.0.0-rc.377)(@trpc/react-query@11.0.0-rc.377)(@trpc/server@11.0.0-rc.377)(next@14.2.3)(react-dom@18.3.1)(react@18.3.1)
+  '@trpc/react-query':
+    specifier: 11.0.0-rc.377
+    version: registry.npmmirror.com/@trpc/react-query@11.0.0-rc.377(@tanstack/react-query@5.39.0)(@trpc/client@11.0.0-rc.377)(@trpc/server@11.0.0-rc.377)(react-dom@18.3.1)(react@18.3.1)
   '@trpc/server':
     specifier: 11.0.0-rc.377
     version: registry.npmmirror.com/@trpc/server@11.0.0-rc.377
@@ -986,6 +995,24 @@ packages:
       tslib: registry.npmmirror.com/tslib@2.6.2
     dev: false
 
+  registry.npmmirror.com/@tanstack/query-core@5.38.0:
+    resolution: {integrity: sha512-QtkoxvFcu52mNpp3+qOo9H265m3rt83Dgbw5WnNyJvr83cegrQ7zT8haHhL4Rul6ZQkeovxyWbXVW9zI0WYx6g==, registry: http://registry.npm.taobao.org/, tarball: https://registry.npmmirror.com/@tanstack/query-core/-/query-core-5.38.0.tgz}
+    name: '@tanstack/query-core'
+    version: 5.38.0
+    dev: false
+
+  registry.npmmirror.com/@tanstack/react-query@5.39.0(react@18.3.1):
+    resolution: {integrity: sha512-zc0WnyEffyTgG+myLv8cY2tJOUT6jOprCiprpbMqylCaCFipSDUPCYCt2AC+qxgk2CFuqiI/fjb1u5/HhLkrPg==, registry: http://registry.npm.taobao.org/, tarball: https://registry.npmmirror.com/@tanstack/react-query/-/react-query-5.39.0.tgz}
+    id: registry.npmmirror.com/@tanstack/react-query/5.39.0
+    name: '@tanstack/react-query'
+    version: 5.39.0
+    peerDependencies:
+      react: ^18.0.0
+    dependencies:
+      '@tanstack/query-core': registry.npmmirror.com/@tanstack/query-core@5.38.0
+      react: registry.npmmirror.com/react@18.3.1
+    dev: false
+
   registry.npmmirror.com/@trpc/client@11.0.0-rc.377(@trpc/server@11.0.0-rc.377):
     resolution: {integrity: sha512-76l9naqQXtVDnkyDs12DrXhzD3fw1SMe7Fzcnc9mxYQlJpbQebGdXnN0sLn7IFodXp2hhfsTj5Azk6tIKBrqOw==, registry: http://registry.npm.taobao.org/, tarball: https://registry.npmmirror.com/@trpc/client/-/client-11.0.0-rc.377.tgz}
     id: registry.npmmirror.com/@trpc/client/11.0.0-rc.377
@@ -995,6 +1022,53 @@ packages:
       '@trpc/server': 11.0.0-rc.377+4a672ddd6
     dependencies:
       '@trpc/server': registry.npmmirror.com/@trpc/server@11.0.0-rc.377
+    dev: false
+
+  registry.npmmirror.com/@trpc/next@11.0.0-rc.377(@tanstack/react-query@5.39.0)(@trpc/client@11.0.0-rc.377)(@trpc/react-query@11.0.0-rc.377)(@trpc/server@11.0.0-rc.377)(next@14.2.3)(react-dom@18.3.1)(react@18.3.1):
+    resolution: {integrity: sha512-jd99QwnUi9/KKUO9MlS7yv00D9dNzuDE8mTjwMWMqZxAMkLkYPlL/2rDHLP9UrAwV/XeiUS3uP0FSXB69u+vNg==, registry: http://registry.npm.taobao.org/, tarball: https://registry.npmmirror.com/@trpc/next/-/next-11.0.0-rc.377.tgz}
+    id: registry.npmmirror.com/@trpc/next/11.0.0-rc.377
+    name: '@trpc/next'
+    version: 11.0.0-rc.377
+    peerDependencies:
+      '@tanstack/react-query': ^5.25.0
+      '@trpc/client': 11.0.0-rc.377+4a672ddd6
+      '@trpc/react-query': 11.0.0-rc.377+4a672ddd6
+      '@trpc/server': 11.0.0-rc.377+4a672ddd6
+      next: '*'
+      react: '>=16.8.0'
+      react-dom: '>=16.8.0'
+    peerDependenciesMeta:
+      '@tanstack/react-query':
+        optional: true
+      '@trpc/react-query':
+        optional: true
+    dependencies:
+      '@tanstack/react-query': registry.npmmirror.com/@tanstack/react-query@5.39.0(react@18.3.1)
+      '@trpc/client': registry.npmmirror.com/@trpc/client@11.0.0-rc.377(@trpc/server@11.0.0-rc.377)
+      '@trpc/react-query': registry.npmmirror.com/@trpc/react-query@11.0.0-rc.377(@tanstack/react-query@5.39.0)(@trpc/client@11.0.0-rc.377)(@trpc/server@11.0.0-rc.377)(react-dom@18.3.1)(react@18.3.1)
+      '@trpc/server': registry.npmmirror.com/@trpc/server@11.0.0-rc.377
+      next: registry.npmmirror.com/next@14.2.3(react-dom@18.3.1)(react@18.3.1)
+      react: registry.npmmirror.com/react@18.3.1
+      react-dom: registry.npmmirror.com/react-dom@18.3.1(react@18.3.1)
+    dev: false
+
+  registry.npmmirror.com/@trpc/react-query@11.0.0-rc.377(@tanstack/react-query@5.39.0)(@trpc/client@11.0.0-rc.377)(@trpc/server@11.0.0-rc.377)(react-dom@18.3.1)(react@18.3.1):
+    resolution: {integrity: sha512-ze8a4rSySRwx+3qP2L6Qrx5DsSwRTpDTL3jzHTcnVGEhGjKWc7/i9qGcoWmyxR/aSiPI6rG0LG+Kn73A437udA==, registry: http://registry.npm.taobao.org/, tarball: https://registry.npmmirror.com/@trpc/react-query/-/react-query-11.0.0-rc.377.tgz}
+    id: registry.npmmirror.com/@trpc/react-query/11.0.0-rc.377
+    name: '@trpc/react-query'
+    version: 11.0.0-rc.377
+    peerDependencies:
+      '@tanstack/react-query': ^5.25.0
+      '@trpc/client': 11.0.0-rc.377+4a672ddd6
+      '@trpc/server': 11.0.0-rc.377+4a672ddd6
+      react: '>=18.2.0'
+      react-dom: '>=18.2.0'
+    dependencies:
+      '@tanstack/react-query': registry.npmmirror.com/@tanstack/react-query@5.39.0(react@18.3.1)
+      '@trpc/client': registry.npmmirror.com/@trpc/client@11.0.0-rc.377(@trpc/server@11.0.0-rc.377)
+      '@trpc/server': registry.npmmirror.com/@trpc/server@11.0.0-rc.377
+      react: registry.npmmirror.com/react@18.3.1
+      react-dom: registry.npmmirror.com/react-dom@18.3.1(react@18.3.1)
     dev: false
 
   registry.npmmirror.com/@trpc/server@11.0.0-rc.377:
