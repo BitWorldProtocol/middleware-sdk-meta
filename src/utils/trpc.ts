@@ -1,4 +1,5 @@
 import { initTRPC, TRPCError } from '@trpc/server';
+import { createCallerFactory } from '@trpc/server/unstable-core-do-not-import';
 import { getServerSession } from 'next-auth';
 /**
  * 异步创建TRPC上下文环境
@@ -46,7 +47,6 @@ const { router, procedure } = t;
 
 export const testRouter = router({
   hello: procedure.query(({ctx}) => {
-    console.log('----ctx-----', ctx.session);
     return {
         hello: 'Hello World'
     };
@@ -54,3 +54,6 @@ export const testRouter = router({
 });
 
 export type TestRouter = typeof testRouter;
+
+
+export const serverCaller = createCallerFactory()(testRouter);
