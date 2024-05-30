@@ -1,9 +1,8 @@
-import { createTRPCClient, httpBatchLink } from "@trpc/client";
+import { httpBatchLink } from "@trpc/client";
 import type { TestRouter } from "./trpc"
 import { createTRPCReact } from "@trpc/react-query";
-
 /**
- * 这段代码是使用TypeScript创建了一个TRPC（Transparent RPC）客户端。 
+ *      这段代码是使用TypeScript创建了一个TRPC（Transparent RPC）客户端。 
  * 首先，通过createTRPCReact<TestRouter>({})创建了一个TRPC的React客户端，
  *      它接收一个TestRouter作为参数。 
  * 然后，使用createClient方法创建了一个TRPC客户端实例trpcClient，

@@ -33,18 +33,6 @@ const t = initTRPC.context<typeof createTRPCContext>().create();
 
 const { router, procedure } = t;
 
-// const middleware = t.middleware(async({ ctx: next }) => {
-//     const start = Date.now();
-
-//     const result = await next();
-
-//     console.log(`${Date.now() - start}ms`);
-
-//     return result
-// })
-
-// const loggedProcedure = procedure.use(middleware);
-
 export const testRouter = router({
   hello: procedure.query(({ctx}) => {
     return {
