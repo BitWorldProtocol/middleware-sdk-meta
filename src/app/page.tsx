@@ -1,16 +1,17 @@
+"use client"
+
 import { Button } from "@/components/Button";
 import { Input } from "@/components/Input";
 import { Textarea } from "@/components/Textarea";
-import { trpcClientReact } from "@/utils/api";
+import { trpcClient } from "@/utils/api";
 import { SessionProvider, UserInfo } from "./UserInfo";
-import { getServerSession } from "@/server/auth";
+import { useEffect } from "react";
 
-export default async function Home() {
+export default function Home() {
 
-  // const {data, isLoading} = trpcClientReact.hello.useQuery()
-  const session = await getServerSession()
-
-  console.log(session, "------> only server can see")
+  useEffect(() => {
+    trpcClient.hello.query()
+  }, [])
  
   return (
     <div className="h-screen flex justify-center items-center">
@@ -19,9 +20,6 @@ export default async function Home() {
         <Input name="name" placeholder="App Name"></Input>
         <Textarea name="description" placeholder="Description"></Textarea>
         <Button type="submit">Submit</Button>
-        <SessionProvider>
-          <UserInfo />
-        </SessionProvider>
         {/* {data?.hello}
         {isLoading && <p>Loading...</p>} */}
       </form>
