@@ -10,17 +10,7 @@ export const authOptions: AuthOptions = {
         clientId: "66f23674c2528ba6151b9cf4ee65a78d32a1627fac487586f8564cc31f0a5db3",
         clientSecret: "gloas-634cfc97ee15a5a3f49702a08b1f3a4f9ad31cb5906957c4af6ccb71a8028307"
     })
-  ],
-  callbacks: {
-    async jwt({ token, account }) {
-      // Persist the OAuth access_token and or the user id to the token right after signin
-      if (account) {
-        console.log("account", account)
-      }
-      console.log("token", token)
-      return token
-    }
-  }
+  ]
 };
 
 /**
