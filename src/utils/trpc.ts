@@ -1,6 +1,6 @@
 import { getServerSession } from "@/server/auth";
 import { initTRPC, TRPCError } from "@trpc/server";
-
+// import { createCallerFactory } from "@trpc/server";
 export async function createTRPCContext() {
     const session = await getServerSession()
     if(!session?.user) {
@@ -15,14 +15,12 @@ export async function createTRPCContext() {
 
 const t = initTRPC.context<typeof createTRPCContext>().create();
 
-const { router, procedure } = t;
+const { router, procedure, createCallerFactory } = t;
 
 const middleware = t.middleware(async({ ctx, next}) => {
     const start = Date.now()
 
     const result = await next()
-
-    console.log("-----> Api Time:", Date.now() - start)
 
     return result
 })
@@ -49,3 +47,5 @@ export const testRouter = router({
 })
 
 export type TestRouter = typeof testRouter;
+
+export const serverCaller = createCallerFactory(testRouter)
