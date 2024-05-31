@@ -1,8 +1,8 @@
 "use client"
-
 import { useState } from "react"
 import { Uppy } from "@uppy/core"
 import AWSS3 from "@uppy/aws-s3"
+import { useUppyState } from "./useUppyState"
 
 export default function Home() {
 
@@ -21,6 +21,7 @@ export default function Home() {
     return uppy 
   })
 
+  const files = useUppyState(uppy, (s) => Object.values(s.files))
 
   return (
     <div className="h-screen flex justify-center items-center">
@@ -34,6 +35,12 @@ export default function Home() {
               })
             }
         }} > multiple </input>
+        {
+          files.map((file) => {
+            const url = URL.createObjectURL(file.data)
+            return <img src={url} key={file.id}></img>;
+          })
+        }
     </div>
   )
 }
