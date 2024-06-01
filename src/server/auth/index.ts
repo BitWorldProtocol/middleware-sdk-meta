@@ -1,10 +1,26 @@
-import { AuthOptions, getServerSession as nextAuthGetServerSession } from "next-auth";
+import { AuthOptions, DefaultSession, getServerSession as nextAuthGetServerSession } from "next-auth";
 import GitlabProvider from "next-auth/providers/gitlab";
 import { DrizzleAdapter } from "@auth/drizzle-adapter"
 import { db } from "@/server/db/db";
 
+declare module "next-auth" {
+  interface Session extends DefaultSession {
+    user: {
+      id: string;
+    } & DefaultSession["user"]
+  }
+}
+
 export const authOptions: AuthOptions = {
   adapter: DrizzleAdapter(db) as any,
+  callbacks: {
+    async session({ session, user}) {
+      if(session.user && user) {
+        session.user.id = user.id;
+      }
+      return session
+    }
+  },
   providers: [
     GitlabProvider({
         clientId: "66f23674c2528ba6151b9cf4ee65a78d32a1627fac487586f8564cc31f0a5db3",

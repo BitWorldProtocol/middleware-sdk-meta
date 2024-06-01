@@ -1,11 +1,14 @@
 import z from "zod"
 import { router, protectedProcedure } from "../trpc"
+import { v4 as uuid } from "uuid"
 import {
     S3Client,
     PutObjectCommand,
     PutObjectCommandInput,
 } from "@aws-sdk/client-s3";
 import { getSignedUrl } from "@aws-sdk/s3-request-presigner";
+import { db } from "@/server/db/db";
+import { files } from "@/server/db/schema";
 
 const bucket = "test-image-1252863179"
 // const apiEndpoint = "https://test-image-1252863179.cos.ap-nanjing.myqcloud.com"
@@ -37,7 +40,6 @@ export const fileRoutes = router({
                 ContentType: input.contentType,
                 ContentLength: input.size,
             };
-            console.log("params", params);
             const s3Client = new S3Client({
                 endpoint: apiEndpoint,
                 region: region,
@@ -57,5 +59,32 @@ export const fileRoutes = router({
                 method: "PUT" as const,
             };
         }),
+    saveFile: protectedProcedure
+        .input(
+            z.object({
+                name: z.string(),
+                path: z.string(),
+                type: z.string(),
+            })
+        )
+        .mutation(async({ ctx, input}) => {
+            const { session } = ctx
+
+            const url = new URL(input.path)
+
+            const photo = await db
+                .insert(files)
+                .values({
+                    ...input,
+                    id: uuid(),
+                    path: url.pathname,
+                    url: url.toString(),
+                    userId: session.user.id,
+                    contentType: input.type
+                })
+                // 返回插入的数据
+                .returning();
+            return photo[0]    
+        })    
 });
 

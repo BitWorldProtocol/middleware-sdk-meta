@@ -1,6 +1,6 @@
 "use client"
-import { useState } from "react"
-import { Uppy } from "@uppy/core"
+import { useEffect, useState } from "react"
+import { UploadSuccessCallback, Uppy } from "@uppy/core"
 import AWSS3 from "@uppy/aws-s3"
 import { useUppyState } from "./useUppyState"
 import { trpcPureClient } from "@/utils/api"
@@ -25,6 +25,23 @@ export default function Home() {
     })
     return uppy
   })
+
+  useEffect(() => {
+    const handler: UploadSuccessCallback<{}> = (file, resp) => {
+      if(file) {
+        trpcPureClient.file.saveFile.mutate({
+          name: file.data instanceof File ? file.data.name: "test",
+          path: resp.uploadURL ?? "",
+          type: file.data.type
+        })
+      }
+    }
+    uppy.on("upload-success", handler)
+
+    return () => {
+      uppy.off("upload-success", handler)
+    }
+  }, [uppy])
 
   const files = useUppyState(uppy, (s) => Object.values(s.files))
   // 上传进度
