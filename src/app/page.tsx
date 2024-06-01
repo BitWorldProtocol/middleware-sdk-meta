@@ -3,13 +3,10 @@
 import { Button } from "@/components/Button";
 import { Input } from "@/components/Input";
 import { Textarea } from "@/components/Textarea";
-import { trpcClient, trpcClientReact } from "@/utils/api";
-import { SessionProvider, UserInfo } from "./UserInfo";
-import { useEffect } from "react";
+import { SessionProvider, UserInfo } from "./UserInfo"
+
 
 export default function Home() {
-
-  const { data, isLoading } = trpcClientReact.hello.useQuery();
  
   return (
     <div className="h-screen flex justify-center items-center">
@@ -18,8 +15,9 @@ export default function Home() {
         <Input name="name" placeholder="App Name"></Input>
         <Textarea name="description" placeholder="Description"></Textarea>
         <Button type="submit">Submit</Button>
-        {data?.hello}
-        {isLoading && <p>Loading...</p>}
+        <SessionProvider>
+            <UserInfo />
+        </SessionProvider>
       </form>
     </div>
   )

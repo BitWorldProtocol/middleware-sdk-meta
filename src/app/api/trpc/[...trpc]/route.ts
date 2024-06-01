@@ -1,7 +1,7 @@
 import { NextRequest } from 'next/server';
 import { fetchRequestHandler } from '@trpc/server/adapters/fetch';
-import { testRouter } from '@/utils/trpc';
 import { createTRPCContext } from '@/utils/trpc';   
+import { appRouter } from '@/server/router';
 /**
  * 处理Next.js的请求，并委托给指定的TRPC路由器进行处理。
  * 
@@ -13,8 +13,8 @@ const handler = (request: NextRequest) => {
     return fetchRequestHandler({
         endpoint: '/api/trpc',
         req: request,
-        router: testRouter,
-        createContext: createTRPCContext,
+        router: appRouter,
+        createContext: () => ({}),
     });
 }
 

@@ -3,6 +3,8 @@ import { useState } from "react"
 import { Uppy } from "@uppy/core"
 import AWSS3 from "@uppy/aws-s3"
 import { useUppyState } from "./useUppyState"
+import { trpcPureClient } from "@/utils/api"
+import { Button } from "@/components/Button"
 
 export default function Home() {
 
@@ -12,16 +14,21 @@ export default function Home() {
     uppy.use(AWSS3, {
       shouldUseMultipart: false,
       // 返回一个pre url给客户端，让用户直接上传到aws s3
-      getUploadParameters() {
-        return {
-          url: '',
-        }
+      getUploadParameters(file) {
+        console.log(file);
+        return trpcPureClient.file.createPresignedUrl.mutate({
+          filename: file.data instanceof File ? file.data.name : "test",
+          contentType: file.data.type || "",
+          size: file.size
+        })
       }
     })
-    return uppy 
+    return uppy
   })
 
   const files = useUppyState(uppy, (s) => Object.values(s.files))
+  // 上传进度
+  const progress = useUppyState(uppy, (s) => s.totalProgress)
 
   return (
     <div className="h-screen flex justify-center items-center">
@@ -34,13 +41,20 @@ export default function Home() {
                 })
               })
             }
-        }} > multiple </input>
+        }} /> multiple
         {
           files.map((file) => {
             const url = URL.createObjectURL(file.data)
             return <img src={url} key={file.id}></img>;
           })
         }
+        <Button 
+          onClick={() => {
+            uppy.upload()
+          }}>
+            Upload
+        </Button>
+        <div>{progress}</div>
     </div>
   )
 }

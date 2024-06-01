@@ -8,7 +8,8 @@ import {
 import { getSignedUrl } from "@aws-sdk/s3-request-presigner";
 
 const bucket = "test-image-1252863179"
-const apiEndpoint = "https://test-image-1252863179.cos.ap-nanjing.myqcloud.com"
+// const apiEndpoint = "https://test-image-1252863179.cos.ap-nanjing.myqcloud.com"
+const apiEndpoint = "https://cos.ap-nanjing.myqcloud.com"
 const region = "ap-nanjing"
 const COS_APP_ID = "AKIDRi8ayDQVUk5JXn9Xpv46zgTA47613Gf0"
 const COS_APP_SECRET = "GJnHh4KXZVovqy5IKApU4X6fN3c4WvHW"
@@ -23,8 +24,9 @@ export const fileRoutes = router({
             })
         )
         .mutation(async ({ ctx, input }) => {
+            // console.log("createPresignedUrl*****", input);
             const date = new Date();
-
+            
             const isoString = date.toISOString();
 
             const dateString = isoString.split("T")[0];
@@ -35,7 +37,7 @@ export const fileRoutes = router({
                 ContentType: input.contentType,
                 ContentLength: input.size,
             };
-
+            console.log("params", params);
             const s3Client = new S3Client({
                 endpoint: apiEndpoint,
                 region: region,
@@ -49,7 +51,7 @@ export const fileRoutes = router({
             const url = await getSignedUrl(s3Client, command, {
                 expiresIn: 60,
             });
-
+            
             return {
                 url,
                 method: "PUT" as const,
