@@ -17,9 +17,9 @@ export default function Home() {
     // 使用插件
     uppy.use(AWSS3, {
       shouldUseMultipart: false,
-      // 返回一个pre url给客户端，让用户直接上传到aws s3
+      // 返回一个pre-url给客户端，让用户直接上传到aws s3
       getUploadParameters(file) {
-        console.log(file);
+        // console.log(file);
         return trpcPureClient.file.createPresignedUrl.mutate({
           filename: file.data instanceof File ? file.data.name : "test",
           contentType: file.data.type || "",

@@ -84,7 +84,7 @@ export const fileRoutes = router({
                 })
                 // 返回插入的数据
                 .returning();
-            console.log("文件上传:", photo[0])    
+            // console.log("文件上传:", photo[0])    
             return photo[0]    
         }),
         
