@@ -3,8 +3,10 @@ import { useEffect, useState } from "react"
 import { UploadSuccessCallback, Uppy } from "@uppy/core"
 import AWSS3 from "@uppy/aws-s3"
 import { useUppyState } from "./useUppyState"
-import { trpcPureClient } from "@/utils/api"
-import { Button } from "@/components/Button"
+import { trpcClientReact, trpcPureClient } from "@/utils/api"
+import { UploadButton } from "@/components/feature/UploadButton"
+import { Button } from "@/components/ui/Button"
+import Image from "next/image"
 
 export default function Home() {
 
@@ -26,6 +28,10 @@ export default function Home() {
     return uppy
   })
 
+  const files = useUppyState(uppy, (s) => Object.values(s.files))
+  // 上传进度
+  const progress = useUppyState(uppy, (s) => s.totalProgress)
+
   useEffect(() => {
     const handler: UploadSuccessCallback<{}> = (file, resp) => {
       if(file) {
@@ -43,35 +49,49 @@ export default function Home() {
     }
   }, [uppy])
 
-  const files = useUppyState(uppy, (s) => Object.values(s.files))
-  // 上传进度
-  const progress = useUppyState(uppy, (s) => s.totalProgress)
+  const { data: fileList, isPending} = trpcClientReact.file.listFiles.useQuery()
 
   return (
-    <div className="h-screen flex justify-center items-center">
-        {/* 将多个文件添加到uppy中 */}
-        <input type="file" onChange={(e) => {
-            if(e.target.files) {
-              Array.from(e.target.files).forEach((file) => {
-                uppy.addFile({
-                  data: file,
-                })
-              })
-            }
-        }} /> multiple
-        {
+    <div className="container mx-auto">
+        <div>
+          <UploadButton uppy={uppy}></UploadButton>
+          <Button 
+            onClick={() => {
+              uppy.upload()
+            }}>
+              Upload
+          </Button>
+          {/* <div>{progress}</div> */}
+        </div>
+        {isPending && <div>Loading...</div>}
+        <div className="flex flex-wrap gap-4">
+          {
+            fileList?.map((file) => {
+              const isImage = file.contentType.startsWith('image')
+              return (
+                <div key={file.id} className="w-56 h-56 flex justify-center items-center border">
+                    {/* {file.name} */}
+                    { isImage ? 
+                      <img src={file.url} alt={file.name} />
+                       : 
+                       <Image 
+                        src="/unknown-file-types.png"
+                        width={100}
+                        height={100} 
+                        alt="unknow file type">
+                        </Image>}
+                </div>
+              )
+            })
+          }
+        </div>
+        {/* {
           files.map((file) => {
             const url = URL.createObjectURL(file.data)
             return <img src={url} key={file.id}></img>;
           })
-        }
-        <Button 
-          onClick={() => {
-            uppy.upload()
-          }}>
-            Upload
-        </Button>
-        <div>{progress}</div>
+        } */}
+        
     </div>
   )
 }

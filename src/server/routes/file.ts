@@ -9,9 +9,9 @@ import {
 import { getSignedUrl } from "@aws-sdk/s3-request-presigner";
 import { db } from "@/server/db/db";
 import { files } from "@/server/db/schema";
+import { desc } from "drizzle-orm";
 
 const bucket = "test-image-1252863179"
-// const apiEndpoint = "https://test-image-1252863179.cos.ap-nanjing.myqcloud.com"
 const apiEndpoint = "https://cos.ap-nanjing.myqcloud.com"
 const region = "ap-nanjing"
 const COS_APP_ID = "AKIDRi8ayDQVUk5JXn9Xpv46zgTA47613Gf0"
@@ -84,7 +84,16 @@ export const fileRoutes = router({
                 })
                 // 返回插入的数据
                 .returning();
+            console.log("文件上传:", photo[0])    
             return photo[0]    
-        })    
+        }),
+        
+    listFiles: protectedProcedure.query(async() => {
+        const result = await db.query.files.findMany({
+            orderBy: [desc(files.createdAt)]
+        })
+
+        return result
+    })    
 });
 
