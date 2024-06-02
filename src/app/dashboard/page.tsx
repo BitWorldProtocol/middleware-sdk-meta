@@ -9,6 +9,7 @@ import { Button } from "@/components/ui/Button";
 import Image from "next/image";
 import { Dropzone } from "@/components/feature/Dropzone";
 import { cn } from "@/lib/utils";
+import { usePasteFile } from "@/hooks/usePasteFile";
 
 export default function Home() {
   const [uppy] = useState(() => {
@@ -52,6 +53,16 @@ export default function Home() {
 
   const { data: fileList, isPending } =
     trpcClientReact.file.listFiles.useQuery();
+  
+  usePasteFile({
+    onFilesPaste: (files) => {
+      uppy.addFiles(
+        files.map((file) => ({
+          data: file
+        })),
+      );
+    },
+  });  
 
   return (
     <div className="container mx-auto p-2">
@@ -105,7 +116,7 @@ export default function Home() {
       </Dropzone>
       {files.map((file) => {
         const url = URL.createObjectURL(file.data);
-        return <img src={url} key={file.id}></img>;
+        return <img src={url} key={file.id} alt={file.name}/>;
       })}
     </div>
   );
