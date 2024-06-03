@@ -76,7 +76,6 @@ export default function Home() {
           Upload
         </Button>
         <UploadButton uppy={uppy}></UploadButton>
-        {/* <div>{progress}</div> */}
       </div>
       {isPending && <div>Loading...</div>}
       <Dropzone uppy={uppy}>
@@ -97,7 +96,6 @@ export default function Home() {
                     key={file.id}
                     className="w-56 h-56 flex justify-center items-center border"
                   >
-                    {/* {file.name} */}
                     {isImage ? (
                       <img src={file.url} alt={file.name} />
                     ) : (
