@@ -66,8 +66,7 @@ export default function Home() {
 
   return (
     <div className="container mx-auto p-2">
-      <div>
-        <UploadButton uppy={uppy}></UploadButton>
+      <div className="flex justify-between items-center mb-4">
         <Button
           onClick={() => {
             uppy.upload();
@@ -75,6 +74,7 @@ export default function Home() {
         >
           Upload
         </Button>
+        <UploadButton uppy={uppy}></UploadButton>
         {/* <div>{progress}</div> */}
       </div>
       {isPending && <div>Loading...</div>}
