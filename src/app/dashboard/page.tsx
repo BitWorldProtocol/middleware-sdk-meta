@@ -10,6 +10,7 @@ import Image from "next/image";
 import { Dropzone } from "@/components/feature/Dropzone";
 import { cn } from "@/lib/utils";
 import { usePasteFile } from "@/hooks/usePasteFile";
+import { UploadPreview } from "@/components/feature/UploadPreview";
 
 export default function Home() {
   const [uppy] = useState(() => {
@@ -30,9 +31,9 @@ export default function Home() {
     return uppy;
   });
 
-  const files = useUppyState(uppy, (s) => Object.values(s.files));
+  // const files = useUppyState(uppy, (s) => Object.values(s.files));
   // 上传进度
-  const progress = useUppyState(uppy, (s) => s.totalProgress);
+  // const progress = useUppyState(uppy, (s) => s.totalProgress);
 
   useEffect(() => {
     const handler: UploadSuccessCallback<{}> = (file, resp) => {
@@ -114,10 +115,11 @@ export default function Home() {
           );
         }}
       </Dropzone>
-      {files.map((file) => {
+      <UploadPreview uppy={uppy}></UploadPreview>
+      {/* {files.map((file) => {
         const url = URL.createObjectURL(file.data);
         return <img src={url} key={file.id} alt={file.name}/>;
-      })}
+      })} */}
     </div>
   );
 }

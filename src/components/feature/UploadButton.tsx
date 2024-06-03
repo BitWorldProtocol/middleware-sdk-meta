@@ -5,7 +5,6 @@ import { useRef } from "react";
 
 export function UploadButton({ uppy }: { uppy: Uppy }) {
   const inputRef = useRef<HTMLInputElement | null>(null);
-
   return (
     <>
       <Button
