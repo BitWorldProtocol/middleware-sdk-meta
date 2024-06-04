@@ -16,8 +16,6 @@ export function UploadPreview({ uppy }: { uppy: Uppy }) {
 
   const file = files[index];
 
-  const isImage = file?.data.type.startsWith("image");
-
   const clear = () => {
     files.map((file) => {
         uppy.removeFile(file.id)

@@ -14,21 +14,21 @@ export function Dropzone({
 
   return (
     <div
-      {...divProps}
+      { ...divProps}
       onDragEnter={(e) => {
         e.preventDefault();
         setDragging(true);
       }}
       onDragLeave={(e) => {
         e.preventDefault();
-        if(timerRef.current) {
-            clearTimeout(timerRef.current)
-            timerRef.current = null
+        if (timerRef.current) {
+            clearTimeout(timerRef.current);
+            timerRef.current = null;
         }
         timerRef.current = setTimeout(() => {
-            setDragging(false)
-        }, 50)
-      }}
+            setDragging(false);
+        }, 50);
+    }}
       onDragOver={(e) => {
         e.preventDefault();
         if(timerRef.current) {
@@ -36,7 +36,7 @@ export function Dropzone({
             timerRef.current = null
         }
       }}
-      onDrag={(e) => {
+      onDrop={(e) => {
         e.preventDefault();
         const files = e.dataTransfer.files;
         Array.from(files).forEach((file) => {
