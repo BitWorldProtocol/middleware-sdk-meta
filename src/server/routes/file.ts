@@ -12,11 +12,11 @@ import { files } from "@/server/db/schema";
 import { desc } from "drizzle-orm";
 import { gt } from "drizzle-orm/expressions";
 
-const bucket = "test-image-1252863179";
-const apiEndpoint = "https://cos.ap-nanjing.myqcloud.com";
-const region = "ap-nanjing";
-const COS_APP_ID = "AKIDRi8ayDQVUk5JXn9Xpv46zgTA47613Gf0";
-const COS_APP_SECRET = "GJnHh4KXZVovqy5IKApU4X6fN3c4WvHW";
+const bucket = "";
+const apiEndpoint = "";
+const region = "";
+const COS_APP_ID = "";
+const COS_APP_SECRET = "";
 
 export const fileRoutes = router({
   createPresignedUrl: protectedProcedure
