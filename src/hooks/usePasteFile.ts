@@ -39,7 +39,7 @@ export function usePasteFile({
           onFilesPaste(files);
         }
       };
-  
+      
       // 在document.body上添加paste事件监听器
       document.body.addEventListener("paste", pasteHandler);
       // 返回一个函数，在组件卸载时移除paste事件监听器
