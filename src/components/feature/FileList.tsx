@@ -4,6 +4,7 @@ import { cn } from "@/lib/utils";
 import { UploadCallback, UploadSuccessCallback, Uppy } from "@uppy/core";
 import { useState, useEffect } from "react";
 import { useUppyState } from "@/app/dashboard/useUppyState";
+import { LocalFileItem, RemoteFileItem } from "./FileItem";
 
 export function FileList({ uppy }: { uppy: Uppy }) {
   const { data: fileList, isPending } =
@@ -64,45 +65,23 @@ export function FileList({ uppy }: { uppy: Uppy }) {
         {uploadingFileIDs.length > 0 &&
           uploadingFileIDs.map((id) => {
             const file = uppyFiles[id];
-            const isImage = file.data.type.startsWith("image");
-
-            const url = URL.createObjectURL(file.data);
             return (
               <div
                 key={file.id}
                 className="w-56 h-56 flex justify-center items-center border border-red-500"
               >
-                {isImage ? (
-                  <img src={url} alt={file.name} />
-                ) : (
-                  <Image
-                    src="/unknown-file-types.png"
-                    width={100}
-                    height={100}
-                    alt="unknow file type"
-                  ></Image>
-                )}
+                <LocalFileItem file={file.data as File}></LocalFileItem>
               </div>
             );
           })}
 
         {fileList?.map((file) => {
-          const isImage = file.contentType.startsWith("image");
           return (
             <div
               key={file.id}
               className="w-56 h-56 flex justify-center items-center border"
             >
-              {isImage ? (
-                <img src={file.url} alt={file.name} />
-              ) : (
-                <Image
-                  src="/unknown-file-types.png"
-                  width={100}
-                  height={100}
-                  alt="unknow file type"
-                ></Image>
-              )}
+                <RemoteFileItem contentType={file.contentType} url={file.url} name={file.name}></RemoteFileItem>
             </div>
           );
         })}
