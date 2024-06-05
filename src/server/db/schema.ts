@@ -7,6 +7,7 @@ import {
   uuid,
   varchar,
   date,
+  index,
 } from "drizzle-orm/pg-core";
 import type { AdapterAccount } from "next-auth/adapters";
 import { relations } from "drizzle-orm";
@@ -76,7 +77,10 @@ export const files = pgTable("files", {
   url: varchar("url", { length: 1024 }).notNull(),
   userId: text("user_id").notNull(),
   contentType: varchar("content_type", { length: 100 }).notNull(),
-});
+},
+(table) => ({
+  cursorIdx: index("cursor_idx").on(table.id, table.createdAt)
+}));
 
 export const photosRelations = relations(files, ({ one }) => ({
   photos: one(users, { fields: [files.userId], references: [users.id] }),

@@ -17,11 +17,11 @@ export function FileList({ uppy }: { uppy: Uppy }) {
   const { data: infinityQueryData, isPending, fetchNextPage } =
     trpcClientReact.file.infinityQueryFiles.useInfiniteQuery(
         {
-            limit: 10,
+            limit: 3,
         },
         {
             getNextPageParam: (res) => res.nextCursor,
-        }    
+        } 
     )
   
   const filesList = infinityQueryData ? infinityQueryData.pages.reduce((result, page) => {

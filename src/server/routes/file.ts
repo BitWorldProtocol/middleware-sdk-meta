@@ -9,14 +9,13 @@ import {
 import { getSignedUrl } from "@aws-sdk/s3-request-presigner";
 import { db } from "@/server/db/db";
 import { files } from "@/server/db/schema";
-import { desc } from "drizzle-orm";
-import { gt } from "drizzle-orm/expressions";
+import { desc, sql } from "drizzle-orm";
 
-const bucket = "";
-const apiEndpoint = "";
-const region = "";
-const COS_APP_ID = "";
-const COS_APP_SECRET = "";
+const bucket = process.env.BUCKET!;
+const apiEndpoint = process.env.API_END_POINT ? process.env.API_END_POINT : "";
+const region = process.env.REGION ? process.env.REGION : "";
+const COS_APP_ID = process.env.COS_APP_ID ? process.env.COS_APP_ID: "";
+const COS_APP_SECRET = process.env.COS_APP_SECRET ? process.env.COS_APP_SECRET : "";
 
 export const fileRoutes = router({
   createPresignedUrl: protectedProcedure
@@ -99,21 +98,30 @@ export const fileRoutes = router({
 
   infinityQueryFiles: protectedProcedure
     .input(z.object({ 
-        cursor: z.string().optional(),
-        limit: z.number().default(10) 
+        cursor: z.object({
+            id: z.string(),
+            createdAt: z.string()
+        }).optional(),
+        limit: z.number().default(10)
     }))
     .query(async ({ input }) => {
       const { cursor, limit } = input;
-
       const result = await db
         .select()
         .from(files)
         .limit(limit)
-        .where(cursor ? gt(files.id, cursor) : undefined)
+        .where(cursor 
+            ?  sql `("files"."created_at", "files"."id") < (${new Date(
+                cursor.createdAt
+            ).toISOString()}, ${cursor.id})`
+            : undefined)
         .orderBy(desc(files.createdAt));
       return {
         items: result,
-        nextCursor: result[result.length - 1].id,
+        nextCursor: result.length > 0 ? {
+            createdAt: result[result.length - 1].createdAt!,
+            id: result[result.length - 1].id,
+        } : null
       };
     }),
 });
