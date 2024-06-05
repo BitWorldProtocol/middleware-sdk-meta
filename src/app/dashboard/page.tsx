@@ -42,8 +42,8 @@ export default function Home() {
   });
 
   return (
-    <div className="container mx-auto p-2">
-      <div className="flex justify-between items-center mb-4">
+    <div className="mx-auto h-screen">
+      <div className="container flex justify-between items-center h-[60px]">
         <Button
           onClick={() => {
             uppy.upload();
@@ -54,7 +54,7 @@ export default function Home() {
         <UploadButton uppy={uppy}></UploadButton>
       </div>
       
-      <Dropzone uppy={uppy} className="relative">
+      <Dropzone uppy={uppy} className="relative h-[calc(100% - 60px)]">
         {
           (draging) => {
             return <>

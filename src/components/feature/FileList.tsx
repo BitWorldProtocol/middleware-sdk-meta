@@ -1,5 +1,4 @@
 import { trpcClientReact, trpcPureClient, AppRouter } from "@/utils/api";
-import Image from "next/image";
 import { cn } from "@/lib/utils";
 import { UploadCallback, UploadSuccessCallback, Uppy } from "@uppy/core";
 import { useState, useEffect } from "react";
@@ -7,6 +6,7 @@ import { useUppyState } from "@/app/dashboard/useUppyState";
 import { LocalFileItem, RemoteFileItem } from "./FileItem";
 import { inferRouterOutputs } from "@trpc/server";
 import { Button } from "../ui/Button";
+import { ScrollArea } from "../ui/ScrollArea";
 
 type FileResult = inferRouterOutputs<AppRouter>["file"]["listFiles"];
 
@@ -77,9 +77,9 @@ export function FileList({ uppy }: { uppy: Uppy }) {
   }, [uppy, utils]);
 
   return (
-    <>
+    <ScrollArea className="h-full">
       {isPending && <div>Loading...</div>}
-      <div className={cn("flex flex-wrap gap-4 relative")}>
+      <div className={cn("flex flex-wrap justify-center gap-4 relative container")}>
         {uploadingFileIDs.length > 0 &&
           uploadingFileIDs.map((id) => {
             const file = uppyFiles[id];
@@ -97,15 +97,16 @@ export function FileList({ uppy }: { uppy: Uppy }) {
           return (
             <div
               key={file.id}
-              className="w-56 h-56 flex justify-center items-center border"
+              className="w-56 h-80 flex justify-center items-center border"
             >
                 <RemoteFileItem contentType={file.contentType} url={file.url} name={file.name}></RemoteFileItem>
             </div>
           );
         })}
-
-        <Button onClick={() => fetchNextPage()}>Next Page</Button>
       </div>
-    </>
+      <div className="flex justify-center p-8">
+         <Button onClick={() => fetchNextPage()}>Load Next Page</Button>
+      </div>
+    </ScrollArea>
   );
 }
