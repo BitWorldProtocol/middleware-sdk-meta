@@ -14,8 +14,10 @@ import { desc, sql } from "drizzle-orm";
 const bucket = process.env.BUCKET!;
 const apiEndpoint = process.env.API_END_POINT ? process.env.API_END_POINT : "";
 const region = process.env.REGION ? process.env.REGION : "";
-const COS_APP_ID = process.env.COS_APP_ID ? process.env.COS_APP_ID: "";
-const COS_APP_SECRET = process.env.COS_APP_SECRET ? process.env.COS_APP_SECRET : "";
+const COS_APP_ID = process.env.COS_APP_ID ? process.env.COS_APP_ID : "";
+const COS_APP_SECRET = process.env.COS_APP_SECRET
+  ? process.env.COS_APP_SECRET
+  : "";
 
 export const fileRoutes = router({
   createPresignedUrl: protectedProcedure
@@ -97,31 +99,40 @@ export const fileRoutes = router({
   }),
 
   infinityQueryFiles: protectedProcedure
-    .input(z.object({ 
-        cursor: z.object({
+    .input(
+      z.object({
+        cursor: z
+          .object({
             id: z.string(),
-            createdAt: z.string()
-        }).optional(),
-        limit: z.number().default(10)
-    }))
+            createdAt: z.string(),
+          })
+          .optional(),
+        limit: z.number().default(10),
+      })
+    )
     .query(async ({ input }) => {
       const { cursor, limit } = input;
       const result = await db
         .select()
         .from(files)
         .limit(limit)
-        .where(cursor 
-            ?  sql `("files"."created_at", "files"."id") < (${new Date(
+        .where(
+          cursor
+            ? sql`("files"."created_at", "files"."id") < (${new Date(
                 cursor.createdAt
-            ).toISOString()}, ${cursor.id})`
-            : undefined)
+              ).toISOString()}, ${cursor.id})`
+            : undefined
+        )
         .orderBy(desc(files.createdAt));
       return {
         items: result,
-        nextCursor: result.length > 0 ? {
-            createdAt: result[result.length - 1].createdAt!,
-            id: result[result.length - 1].id,
-        } : null
+        nextCursor:
+          result.length > 0
+            ? {
+                createdAt: result[result.length - 1].createdAt!,
+                id: result[result.length - 1].id,
+              }
+            : null,
       };
     }),
 });

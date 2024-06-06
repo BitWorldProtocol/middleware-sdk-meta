@@ -1,7 +1,7 @@
 import { trpcClientReact, trpcPureClient, AppRouter } from "@/utils/api";
 import { cn } from "@/lib/utils";
 import { UploadCallback, UploadSuccessCallback, Uppy } from "@uppy/core";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { useUppyState } from "@/app/dashboard/useUppyState";
 import { LocalFileItem, RemoteFileItem } from "./FileItem";
 import { inferRouterOutputs } from "@trpc/server";
@@ -11,23 +11,28 @@ import { ScrollArea } from "../ui/ScrollArea";
 type FileResult = inferRouterOutputs<AppRouter>["file"]["listFiles"];
 
 export function FileList({ uppy }: { uppy: Uppy }) {
-//   const { data: fileList, isPending } =
-//     trpcClientReact.file.listFiles.useQuery();
+  //   const { data: fileList, isPending } =
+  //     trpcClientReact.file.listFiles.useQuery();
 
-  const { data: infinityQueryData, isPending, fetchNextPage } =
-    trpcClientReact.file.infinityQueryFiles.useInfiniteQuery(
-        {
-            limit: 3,
-        },
-        {
-            getNextPageParam: (res) => res.nextCursor,
-        } 
-    )
-  
-  const filesList = infinityQueryData ? infinityQueryData.pages.reduce((result, page) => {
-    return [...result, ...page.items];
-  }, [] as FileResult) : []
-  
+  const {
+    data: infinityQueryData,
+    isPending,
+    fetchNextPage,
+  } = trpcClientReact.file.infinityQueryFiles.useInfiniteQuery(
+    {
+      limit: 10,
+    },
+    {
+      getNextPageParam: (res) => res.nextCursor,
+    }
+  );
+
+  const filesList = infinityQueryData
+    ? infinityQueryData.pages.reduce((result, page) => {
+        return [...result, ...page.items];
+      }, [] as FileResult)
+    : [];
+
   const utils = trpcClientReact.useUtils();
 
   const [uploadingFileIDs, setUploadingFileIDs] = useState<string[]>([]);
@@ -43,12 +48,30 @@ export function FileList({ uppy }: { uppy: Uppy }) {
             type: file.data.type,
           })
           .then((res) => {
-            utils.file.listFiles.setData(void 0, (prev) => {
-              if (!prev) {
-                return prev;
-              }
-              return [res, ...prev];
-            });
+            utils.file.infinityQueryFiles.setInfiniteData(
+                { limit: 10},
+                (prev) => {
+                    if(!prev) return prev
+                    return {
+                        ...prev,
+                        pages: prev.pages.map((page, index) => {
+                            if(index === 0) {
+                                return {
+                                    ...page,
+                                    items: [res, ...page.items]
+                                }
+                            }
+                            return page
+                        })
+                    }
+                }
+            )
+            // utils.file.listFiles.setData(void 0, (prev) => {
+            //   if (!prev) {
+            //     return prev;
+            //   }
+            //   return [res, ...prev];
+            // });
           });
       }
     };
@@ -76,10 +99,36 @@ export function FileList({ uppy }: { uppy: Uppy }) {
     };
   }, [uppy, utils]);
 
+  // ---------------------------------> intersection
+
+  const bottomRef = useRef<HTMLDivElement | null>(null);
+  useEffect(() => {
+    if (bottomRef.current) {
+      const observer = new IntersectionObserver(
+        (e) => {
+            console.log("------------>", e);
+            if(e[0].intersectionRatio > 0.1) fetchNextPage();
+        },
+        { 
+            threshold: 0.1 
+        }
+      );
+
+      observer.observe(bottomRef.current);
+      const element = bottomRef.current!;
+      return () => {
+        observer.unobserve(element);
+        observer.disconnect();
+      }
+    }
+  }, [fetchNextPage]);
+
   return (
     <ScrollArea className="h-full">
       {isPending && <div>Loading...</div>}
-      <div className={cn("flex flex-wrap justify-center gap-4 relative container")}>
+      <div
+        className={cn("flex flex-wrap justify-center gap-4 relative container")}
+      >
         {uploadingFileIDs.length > 0 &&
           uploadingFileIDs.map((id) => {
             const file = uppyFiles[id];
@@ -97,15 +146,21 @@ export function FileList({ uppy }: { uppy: Uppy }) {
           return (
             <div
               key={file.id}
-              className="w-56 h-80 flex justify-center items-center border"
+              className="w-56 h-56 flex justify-center items-center border"
             >
-                <RemoteFileItem contentType={file.contentType} url={file.url} name={file.name}></RemoteFileItem>
+              <RemoteFileItem
+                contentType={file.contentType}
+                url={file.url}
+                name={file.name}
+              ></RemoteFileItem>
             </div>
           );
         })}
       </div>
-      <div className="flex justify-center p-8">
-         <Button onClick={() => fetchNextPage()}>Load Next Page</Button>
+      <div className={cn("flex justify-center p-8", filesList.length > 0 && "flex")} ref={bottomRef}>
+        <Button variant="ghost" onClick={() => fetchNextPage()}>
+          Load Next Page
+        </Button>
       </div>
     </ScrollArea>
   );

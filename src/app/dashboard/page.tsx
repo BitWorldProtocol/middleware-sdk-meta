@@ -54,7 +54,7 @@ export default function Home() {
         <UploadButton uppy={uppy}></UploadButton>
       </div>
       
-      <Dropzone uppy={uppy} className="relative h-[calc(100% - 60px)]">
+      <Dropzone uppy={uppy} className="relative h-[calc(100%-60px)]">
         {
           (draging) => {
             return <>
