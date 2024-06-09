@@ -66,12 +66,6 @@ export function FileList({ uppy }: { uppy: Uppy }) {
                     }
                 }
             )
-            // utils.file.listFiles.setData(void 0, (prev) => {
-            //   if (!prev) {
-            //     return prev;
-            //   }
-            //   return [res, ...prev];
-            // });
           });
       }
     };
