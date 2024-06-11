@@ -12,7 +12,7 @@ export const queryUserSchema = createSelectSchema(users);
 
 export const fileSchema = createSelectSchema(files);
 
-export const filesCanOrderByColums = fileSchema.pick({
+export const filesCanOrderByColumns = fileSchema.pick({
     createdAt: true,
     deletedAt: true
 })

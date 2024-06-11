@@ -7,10 +7,11 @@ import { LocalFileItem, RemoteFileItem } from "./FileItem";
 import { inferRouterOutputs } from "@trpc/server";
 import { Button } from "../ui/Button";
 import { ScrollArea } from "../ui/ScrollArea";
+import type { FilesOrderByColumn } from "@/server/routes/file"
 
 type FileResult = inferRouterOutputs<AppRouter>["file"]["listFiles"];
 
-export function FileList({ uppy }: { uppy: Uppy }) {
+export function FileList({ uppy, orderBy }: { uppy: Uppy, orderBy: FilesOrderByColumn }) {
   //   const { data: fileList, isPending } =
   //     trpcClientReact.file.listFiles.useQuery();
 
@@ -20,7 +21,8 @@ export function FileList({ uppy }: { uppy: Uppy }) {
     fetchNextPage,
   } = trpcClientReact.file.infinityQueryFiles.useInfiniteQuery(
     {
-      limit: 10,
+      limit: 6,
+      orderBy
     },
     {
       getNextPageParam: (res) => res.nextCursor,
@@ -94,8 +96,9 @@ export function FileList({ uppy }: { uppy: Uppy }) {
   }, [uppy, utils]);
 
   // ---------------------------------> intersection
-
+  // target element
   const bottomRef = useRef<HTMLDivElement | null>(null);
+  // console.log("bottomRef", bottomRef);
   useEffect(() => {
     if (bottomRef.current) {
       const observer = new IntersectionObserver(
@@ -140,7 +143,7 @@ export function FileList({ uppy }: { uppy: Uppy }) {
           return (
             <div
               key={file.id}
-              className="w-56 h-56 flex justify-center items-center border"
+              className="w-56 h-80 flex justify-center items-center border"
             >
               <RemoteFileItem
                 contentType={file.contentType}
@@ -151,7 +154,7 @@ export function FileList({ uppy }: { uppy: Uppy }) {
           );
         })}
       </div>
-      <div className={cn("flex justify-center p-8", filesList.length > 0 && "flex")} ref={bottomRef}>
+      <div className={cn("flex justify-center p-8 border border-rose-600", filesList.length > 0 && "flex")} ref={bottomRef}>
         <Button variant="ghost" onClick={() => fetchNextPage()}>
           Load Next Page
         </Button>

@@ -10,7 +10,7 @@ import { getSignedUrl } from "@aws-sdk/s3-request-presigner";
 import { db } from "@/server/db/db";
 import { files } from "@/server/db/schema";
 import { desc, sql } from "drizzle-orm";
-import { filesCanOrderByColums } from "../db/validate-schema";
+import { filesCanOrderByColumns } from "../db/validate-schema";
 
 const bucket = process.env.BUCKET!;
 const apiEndpoint = process.env.API_END_POINT ? process.env.API_END_POINT : "";
@@ -19,6 +19,13 @@ const COS_APP_ID = process.env.COS_APP_ID ? process.env.COS_APP_ID : "";
 const COS_APP_SECRET = process.env.COS_APP_SECRET
   ? process.env.COS_APP_SECRET
   : "";
+
+const filesOrderByColumnSchema = z.object({
+  field: filesCanOrderByColumns.keyof(),
+  order: z.enum(["desc", "asc"])
+}).optional()
+
+export type FilesOrderByColumn = z.infer<typeof filesOrderByColumnSchema>
 
 export const fileRoutes = router({
   createPresignedUrl: protectedProcedure
@@ -109,10 +116,7 @@ export const fileRoutes = router({
           })
           .optional(),
         limit: z.number().default(10),
-        orderBy: z.object({
-            field: filesCanOrderByColums.keyof(),
-            order: z.enum(["desc", "asc"])
-        }).optional()
+        orderBy: filesOrderByColumnSchema
       })
     )
     .query(async ({ input }) => {
@@ -128,12 +132,7 @@ export const fileRoutes = router({
               ).toISOString()}, ${cursor.id})`
             : undefined
         )
-        // .orderBy(desc(files.createdAt));
-      statement.orderBy(orderBy.order == 'desc' 
-            ?  desc(files[orderBy.field]) : asc(files[orderBy.field]))  
-
       const result = await statement.execute();
-
       return {
         items: result,
         nextCursor:
