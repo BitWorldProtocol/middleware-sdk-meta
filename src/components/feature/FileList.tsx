@@ -12,9 +12,6 @@ import type { FilesOrderByColumn } from "@/server/routes/file"
 type FileResult = inferRouterOutputs<AppRouter>["file"]["listFiles"];
 
 export function FileList({ uppy, orderBy }: { uppy: Uppy, orderBy: FilesOrderByColumn }) {
-  //   const { data: fileList, isPending } =
-  //     trpcClientReact.file.listFiles.useQuery();
-
   const {
     data: infinityQueryData,
     isPending,
@@ -94,11 +91,9 @@ export function FileList({ uppy, orderBy }: { uppy: Uppy, orderBy: FilesOrderByC
       uppy.off("complete", completeHandler);
     };
   }, [uppy, utils]);
-
   // ---------------------------------> intersection
   // target element
   const bottomRef = useRef<HTMLDivElement | null>(null);
-  // console.log("bottomRef", bottomRef);
   useEffect(() => {
     if (bottomRef.current) {
       const observer = new IntersectionObserver(

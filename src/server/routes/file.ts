@@ -9,7 +9,7 @@ import {
 import { getSignedUrl } from "@aws-sdk/s3-request-presigner";
 import { db } from "@/server/db/db";
 import { files } from "@/server/db/schema";
-import { desc, sql } from "drizzle-orm";
+import { asc, desc, sql } from "drizzle-orm";
 import { filesCanOrderByColumns } from "../db/validate-schema";
 
 const bucket = process.env.BUCKET!;
@@ -120,7 +120,7 @@ export const fileRoutes = router({
       })
     )
     .query(async ({ input }) => {
-      const { cursor, limit, orderBy = {filed: 'createdAt', order: 'desc'} } = input;
+      const { cursor, limit, orderBy = {field: 'createdAt', order: 'desc'} } = input;
       const statement = db
         .select()
         .from(files)
@@ -132,7 +132,14 @@ export const fileRoutes = router({
               ).toISOString()}, ${cursor.id})`
             : undefined
         )
-      const result = await statement.execute();
+      // const result = await statement.execute();
+
+      statement.orderBy(
+        orderBy.order === 'desc' ? desc(files[orderBy.field]): asc(files[orderBy.field])
+      )
+      
+      const result = await statement;
+
       return {
         items: result,
         nextCursor:
