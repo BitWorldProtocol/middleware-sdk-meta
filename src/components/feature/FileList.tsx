@@ -48,7 +48,7 @@ export function FileList({ uppy, orderBy }: { uppy: Uppy, orderBy: FilesOrderByC
           })
           .then((res) => {
             utils.file.infinityQueryFiles.setInfiniteData(
-                { limit: 10},
+                { limit: 10 },
                 (prev) => {
                     if(!prev) return prev
                     return {
