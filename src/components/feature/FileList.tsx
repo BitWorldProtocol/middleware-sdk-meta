@@ -7,7 +7,7 @@ import { LocalFileItem, RemoteFileItem } from "./FileItem";
 import { inferRouterOutputs } from "@trpc/server";
 import { Button } from "../ui/Button";
 import { ScrollArea } from "../ui/ScrollArea";
-import type { FilesOrderByColumn } from "@/server/routes/file"
+import { type FilesOrderByColumn } from "@/server/routes/file"
 
 type FileResult = inferRouterOutputs<AppRouter>["file"]["listFiles"];
 

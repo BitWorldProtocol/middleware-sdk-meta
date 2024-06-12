@@ -67,6 +67,10 @@ export const verificationTokens = pgTable(
   })
 );
 
+/**
+ * files表创建cursorIdx索引,对应的字段
+ *  是table.id, table.createdAt
+ */
 export const files = pgTable("files", {
   id: uuid("id").notNull().primaryKey(),
   name: varchar("name", { length: 100 }).notNull(),
