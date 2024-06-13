@@ -49,7 +49,7 @@ export default function Home() {
   })
 
   return (
-    <div className="mx-auto h-screen">
+    <div className="mx-auto h-full">
       <div className="container flex justify-between items-center h-[60px]">
         <Button onClick={() => {
           setOrderBy(current => ({
