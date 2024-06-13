@@ -8,7 +8,7 @@ import { inferRouterOutputs } from "@trpc/server";
 import { Button } from "../ui/Button";
 import { ScrollArea } from "../ui/ScrollArea";
 import { type FilesOrderByColumn } from "@/server/routes/file"
-import { DeleteFile } from "./FileItemAction";
+import { CopyUrl, DeleteFile } from "./FileItemAction";
 
 type FileResult = inferRouterOutputs<AppRouter>["file"]["listFiles"];
 
@@ -24,7 +24,7 @@ export function FileList({ uppy, orderBy }: { uppy: Uppy, orderBy: FilesOrderByC
     isPending,
     fetchNextPage,
   } = trpcClientReact.file.infinityQueryFiles.useInfiniteQuery(
-    queryKey,
+    {...queryKey},
     {
       getNextPageParam: (res) => res.nextCursor,
     }
@@ -55,7 +55,7 @@ export function FileList({ uppy, orderBy }: { uppy: Uppy, orderBy: FilesOrderByC
           })
           .then((res) => {
             utils.file.infinityQueryFiles.setInfiniteData(
-                queryKey,
+              {...queryKey},
                 (prev) => {
                     if(!prev) return prev
                     return {
@@ -124,7 +124,7 @@ export function FileList({ uppy, orderBy }: { uppy: Uppy, orderBy: FilesOrderByC
 
   const handleFileDelete = (id: string) => {
     utils.file.infinityQueryFiles.setInfiniteData(
-      queryKey,
+      {...queryKey},
       (prev) => {
           if(!prev) return prev
           return {
@@ -169,6 +169,7 @@ export function FileList({ uppy, orderBy }: { uppy: Uppy, orderBy: FilesOrderByC
               className="w-56 h-80 relative flex justify-center items-center border"
             >
               <div className="absolute inset-0 bg-background/30 opacity-0 hover:opacity-100 justify-center items-center flex">
+                <CopyUrl url={file.url}></CopyUrl>
                 <DeleteFile fileId={file.id} onDeleteSuccess={handleFileDelete}></DeleteFile>
               </div>
               <RemoteFileItem
