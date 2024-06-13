@@ -9,7 +9,7 @@ import {
 import { getSignedUrl } from "@aws-sdk/s3-request-presigner";
 import { db } from "@/server/db/db";
 import { files } from "@/server/db/schema";
-import { asc, desc, sql } from "drizzle-orm";
+import { asc, desc, sql, eq, isNull, and } from "drizzle-orm";
 import { filesCanOrderByColumns } from "../db/validate-schema";
 
 const bucket = process.env.BUCKET!;
@@ -121,20 +121,23 @@ export const fileRoutes = router({
     )
     .query(async ({ input }) => {
       const { cursor, limit, orderBy = {field: 'createdAt', order: 'desc'} } = input;
+
+      const deletedFileter = isNull(files.deletedAt)
+
       const statement = db
         .select()
         .from(files)
         .limit(limit)
         .where(
           cursor
-            ? orderBy.field === 'createdAt' && orderBy.order ==='asc' 
+            ? and(orderBy.field === 'createdAt' && orderBy.order ==='asc' 
               ? sql`(DATE_TRUNC('milliseconds',"files"."created_at"), "files"."id") > (${new Date(
                   cursor.createdAt
                 ).toISOString()}, ${cursor.id})`
                 : sql`(DATE_TRUNC('milliseconds',"files"."created_at"), "files"."id") < (${new Date(
                   cursor.createdAt
-                ).toISOString()}, ${cursor.id})`
-            : undefined
+                ).toISOString()}, ${cursor.id})`, deletedFileter)
+            : deletedFileter
         )
       // const result = await statement.execute();
         
@@ -155,4 +158,12 @@ export const fileRoutes = router({
             : null,
       };
     }),
+
+  
+  // 根据文件id删除file，其实是更新file的deleteAt时间  
+  deleteFile: protectedProcedure.input(z.string()).mutation(async({ ctx, input}) => {
+    return db.update(files).set({
+      deletedAt: new Date()
+    }).where(eq(files.id, input))
+  })  
 });
