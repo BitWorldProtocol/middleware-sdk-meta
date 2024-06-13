@@ -174,7 +174,7 @@ export function FileList({ uppy, orderBy }: { uppy: Uppy, orderBy: FilesOrderByC
               </div>
               <RemoteFileItem
                 contentType={file.contentType}
-                url={file.url}
+                id={file.id}
                 name={file.name}
               ></RemoteFileItem>
             </div>
