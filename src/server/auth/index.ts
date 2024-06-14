@@ -27,7 +27,7 @@ export const authOptions: AuthOptions = {
         clientSecret: "gloas-634cfc97ee15a5a3f49702a08b1f3a4f9ad31cb5906957c4af6ccb71a8028307"
     })
   ],
-  // secret: "k8roXCsd/d5uz74CBJVUEwcIHe850xJHqVsxFnNlHgI=",
+  secret: "k8roXCsd/d5uz74CBJVUEwcIHe850xJHqVsxFnNlHgI=",
 };
 /**
  * 获取服务器会话
